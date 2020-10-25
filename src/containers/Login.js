@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import './Login.css';
+import { useAppContext } from '../libs/contextLib';
 
 export default function Login() {
+  const { setIsAuthenticated } = useAppContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,6 +14,7 @@ export default function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    setIsAuthenticated(true);
   }
 
   return (
@@ -41,7 +44,6 @@ export default function Login() {
         </Form.Group>
         <Button
           block
-          size='lg'
           disabled={!validateForm()}
           type='submit'
         >

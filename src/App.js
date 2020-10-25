@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { AppContext } from './libs/contextLib';
 import Routes from './Routes';
 import './App.css';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  function handleLogout () {
+    setIsAuthenticated(false);
+  };
+
   return (
     <div className='App container'>
       <Navbar expand='sm' variant="light">
@@ -30,16 +37,30 @@ function App() {
             </Nav.Link>
           </Nav>
           <Nav>
-            <LinkContainer to='/signup' className='mr-sm-2'>
-              <Button>Signup</Button>
-            </LinkContainer>
-            <LinkContainer to='/login'>
-              <Button variant='outline-primary'>Login</Button>
-            </LinkContainer>
+            {isAuthenticated
+              ?
+              (<Button
+                variant='outline-primary'
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>)
+              :
+              (<>
+                <LinkContainer to='/signup' className='mr-sm-2'>
+                  <Button>Signup</Button>
+                </LinkContainer>
+                <LinkContainer to='/login'>
+                  <Button variant='outline-primary'>Login</Button>
+                </LinkContainer>
+              </>)
+            }
           </Nav>
         </Container>
       </Navbar>
-      <Routes />
+      <AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+        <Routes />
+      </AppContext.Provider>
     </div>
   );
 }
