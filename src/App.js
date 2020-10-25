@@ -1,20 +1,42 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Auth } from 'aws-amplify';
 import { AppContext } from './libs/contextLib';
 import Routes from './Routes';
 import './App.css';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 
 function App() {
+  const history = useHistory();
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  function handleLogout () {
+  useEffect(() => {
+    onLoad();
+  }, []);
+
+  async function onLoad() {
+    try {
+      await Auth.currentSession();
+      setIsAuthenticated(true);
+    } catch (error) {
+      if (error !== 'No current user') {
+        alert(error.message);
+      }
+    }
+    setIsAuthenticating(false);
+  };
+
+  async function handleLogout () {
+    await Auth.signOut();
     setIsAuthenticated(false);
+    history.push('/login');
   };
 
   return (
+    !isAuthenticating &&
     <div className='App container'>
       <Navbar expand='sm' variant="light">
         <Container>
