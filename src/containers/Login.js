@@ -5,6 +5,7 @@ import './Login.css';
 import { Auth } from 'aws-amplify';
 import { useAppContext } from '../libs/contextLib';
 import LoadingButton from './LoadingButton';
+import { onError } from '../libs/errorLib';
 
 export default function Login() {
   const history = useHistory();
@@ -25,7 +26,7 @@ export default function Login() {
       setIsAuthenticated(true);
       history.push('/');
     } catch (error) {
-      alert(error.message);
+      onError(error);
       setIsLoading(false);
     };
   }
