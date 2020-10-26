@@ -7,6 +7,7 @@ import { AppContext } from './libs/contextLib';
 import Routes from './Routes';
 import './App.css';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import { onError } from './libs/errorLib';
 
 function App() {
   const history = useHistory();
@@ -23,7 +24,7 @@ function App() {
       setIsAuthenticated(true);
     } catch (error) {
       if (error !== 'No current user') {
-        alert(error.message);
+        onError(error);
       }
     }
     setIsAuthenticating(false);
