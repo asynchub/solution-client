@@ -5,14 +5,18 @@ import './Login.css';
 import { Auth } from 'aws-amplify';
 import { useAppContext } from '../libs/contextLib';
 import LoadingButton from './LoadingButton';
+import { useFormFields } from '../libs/hooksLib';
 import { onError } from '../libs/errorLib';
 
 export default function Login() {
   const history = useHistory();
   const { setIsAuthenticated } = useAppContext();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [fields, handleFieldChange] = useFormFields({
+    email: '',
+    password: ''
+  });
+  const { email, password } = fields;
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -43,7 +47,9 @@ export default function Login() {
           <Form.Control
             type='email'
             placeholder='Email'
-            onChange={(event) => setEmail(event.target.value)}
+            id={'email'}
+            value={email}
+            onChange={handleFieldChange}
           />
         </Form.Group>
         <Form.Group>
@@ -53,7 +59,9 @@ export default function Login() {
           <Form.Control
             type='password'
             placeholder='Password'
-            onChange={(event) => setPassword(event.target.value)}
+            id={'password'}
+            value={password}
+            onChange={handleFieldChange}
           />
         </Form.Group>
         <LoadingButton
