@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Navbar, Container, Nav, Button, NavDropdown } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
 import { Auth } from 'aws-amplify';
 import { AppContext } from './libs/contextLib';
 import Routes from './Routes';
@@ -70,12 +69,12 @@ function App() {
               </Button>)
               :
               (<>
-                <LinkContainer to='/signup' className='mr-sm-2'>
-                  <Button>Signup</Button>
-                </LinkContainer>
-                <LinkContainer to='/login'>
+                <Nav.Link as={Link} to='/signup'>
+                  <Button variant='outline-primary'>Signup</Button>
+                </Nav.Link>
+                <Nav.Link as={Link} to='/login'>
                   <Button variant='outline-primary'>Login</Button>
-                </LinkContainer>
+                </Nav.Link>
               </>)
             }
           </Nav>
